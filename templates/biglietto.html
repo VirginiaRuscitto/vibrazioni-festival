@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titolo %}{{ p_opzioni[0].nome_visualizzato }}{% endblock %}
+{% block contenuto %}
+
+<section class="col-12 col-md-9 col-lg-7 mx-auto px-3 px-md-0">
+    <h2 class="font_oswald_title mb-4 text-center">{{ p_opzioni[0].nome_visualizzato }}</h2>
+    <div class="text-center">
+        <p class="font_oswald_body paragrafo_grande">Stai acquistando il <strong>{{ p_opzioni[0].nome_visualizzato | lower }}</strong> 
+            {{p_opzioni[0].descrizione | lower }}</p>
+    </div>
+
+    <form action="{{ url_for('acquista_biglietto') }}" method="POST">
+        {% if p_opzioni|length > 1 %}
+        <div class="mt-5">
+            <label for="giorni" class="form-label">Seleziona una delle opzioni disponibili per il biglietto</label>
+            <select class="form-select" id="giorni" aria-label="Seleziona un'opzione" name="giorni" required>
+                <option value="" disabled selected>Seleziona un'opzione</option>
+                {% for opzione in p_opzioni %}
+                    {% set giorni = [] %}
+                    {% for giorno_key, giorno_nome in p_giorni_festival.items() %}
+                        {% if opzione[giorno_key] != 0 %}
+                            {% set _ = giorni.append(giorno_nome) %}
+                        {% endif %}
+                    {% endfor %}
+                <option value="{{ opzione.giorni_bin }}" {% if opzione.disabilitato %}disabled{% endif %}>
+                    {{ giorni | join(' e ') }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+        <input type="hidden" name="giorni" value="{{ p_opzioni[0].giorni_bin }}">
+        {% endif %}
+
+        <input type="hidden" name="tipo_biglietto" value="{{ p_opzioni[0].nome }}">
+        <div class="text-center d-flex flex-column flex-md-row justify-content-center align-items-center mt-5 mb-3">
+            <a class="bottone_blu order-2 order-md-1 mt-3 mt-md-0 mx-md-2" href="{{ url_for('biglietti') }}">Torna ai
+                biglietti</a>
+            <button type="submit" class="bottone_rosso order-1 order-md-2 mx-md-2">Compra ora</button>
+        </div>
+    </form>
+</section>
+
+{% endblock %}

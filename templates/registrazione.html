@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titolo %}Registrazione{% endblock %}
+{% block contenuto %}
+
+<section class="col-12 col-md-9 col-lg-7 mx-auto px-3 px-md-0">
+    <h2 class="font_oswald_title mb-4 text-center">Registrazione</h2>
+
+    <form action="{{ url_for('registrati') }}" method="POST">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Inserire il nome</label>
+            <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="cognome" class="form-label">Inserire il cognome</label>
+            <input type="text" class="form-control" id="cognome" name="cognome" placeholder="Cognome" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Inserire l'email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+        </div>
+
+        <div>
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password"
+                minlength="8" required>
+            <div class="form-text">La password deve essere minimo di 8 caratteri</div>
+        </div>
+
+        <div class="mt-4">
+            <label class="mb-2 text-md-center d-block">Seleziona il tuo ruolo all'interno del festival</label>
+            <div class="d-flex justify-content-center gap-3 mt-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo_utente" id="partecipante" value="1" checked>
+                    <label class="form-check-label" for="partecipante">Partecipante</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo_utente" id="organizzatore" value="0">
+                    <label class="form-check-label" for="organizzatore">Organizzatore</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center d-flex flex-column flex-md-row justify-content-center align-items-center mt-5">
+            <a class="bottone_blu order-2 order-md-1 mt-3 mt-md-0 mx-md-2" href="{{ url_for('home') }}">Torna alla home</a>
+            <button type="submit" class="bottone_rosso order-1 order-md-2 mx-md-2">Registrati</button>
+        </div>
+    </form>
+
+</section>
+
+{% endblock %}

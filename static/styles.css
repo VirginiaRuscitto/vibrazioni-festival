@@ -1,0 +1,347 @@
+/*sfondi*/
+body {
+  background-color: #f9ecd9;
+  padding-top: 75px;
+}
+
+@media (max-width: 767.98px) {
+  body {
+    padding-top: 55px;
+  }
+}
+
+.biglietto_1_sfondo {
+  background-color: #ddc398;
+}
+
+.biglietto_2_sfondo {
+  background-color: rgb(240, 160, 42, 0.5);
+}
+
+.biglietto_3_sfondo {
+  background-color: rgba(74, 161, 157, 0.4);
+}
+
+/*navbar*/
+.main_navbar{
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9ecd9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030; /* più alto di altri elementi */
+}
+
+@media (min-width: 768px) {
+  .main_navbar .navbar-collapse {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.main_navbar .navbar-nav .nav-link {
+  color: #135860;
+}
+
+.main_navbar .navbar-nav .nav-link:hover,
+.main_navbar .navbar-nav .nav-link.active {
+  color: #73beb3;
+}
+
+.main_navbar .navbar-nav .nav-link.biglietti_disabilitati,
+.main_navbar .navbar-nav .nav-link.biglietti_disabilitati:hover,
+.main_navbar .navbar-nav .nav-link.biglietti_disabilitati:focus,
+.main_navbar .navbar-nav .nav-link.biglietti_disabilitati:focus-visible,
+.main_navbar .navbar-nav .nav-link.biglietti_disabilitati:active,
+.main_navbar .navbar-nav .nav-link.biglietti_disabilitati:visited {
+  color: #8a9a91;
+  cursor: not-allowed;/*graficamente non si può cliccare ma a livello backend serve il clic per mandare il flash*/       
+  opacity: 0.65;
+}
+
+@media (max-width: 767.98px) {
+  .navbar-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+  }
+}
+
+#meta {
+  scroll-margin-top: 75px;
+}
+
+@media (max-width: 767.98px) {
+  #meta {
+    scroll-margin-top: 55px;
+  }
+}
+
+/*bottoni*/
+.bottone_rosso {
+  background-color:#da5b26;
+  color: white;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none; /*per eventuali link*/
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  display: inline-block;
+}
+
+.bottone_rosso:hover {
+  background-color: #b54a1e;
+}
+
+.bottone_rosso:active {
+  background-color: #8f3918;
+  transform: scale(0.97);
+}
+
+.bottone_rosso:disabled {
+    background-color: #6c757d ;
+    border-color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.65;
+    box-shadow: none;
+}
+
+.bottone_blu {
+  background-color: #358481;
+  color: white;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none; /*per eventuali link*/
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  display: inline-block;
+}
+
+.bottone_blu:hover {
+  background-color: #2c686a;
+}
+
+.bottone_blu:active {
+  background-color: #245354;
+  transform: scale(0.97);
+}
+
+/*font*/
+.font_oswald_title {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  color: #135860;
+}
+
+.font_oswald_body {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  letter-spacing: 0.03em;
+  line-height: 1.70;
+}
+
+.iniziale_maiuscola::first-letter {
+  text-transform: uppercase;
+}
+
+.paragrafo_piccolo {
+  font-size: 0.9rem;
+}
+
+.paragrafo_medio {
+  font-size: 1rem;
+}
+
+.paragrafo_grande {
+  font-size: 1.1rem;
+}
+
+.paragrafo{
+  text-align: justify;
+  overflow-wrap: break-word;
+}
+
+/*biglietti*/
+.biglietti_dimensioni{
+  max-width: 600px;
+}
+
+/*blocco biglietti*/
+.disabled_overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 10; 
+  pointer-events: all;
+}
+
+.position_relative {
+  position: relative;
+}
+
+.disabled_link {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/*visualizzazione biglietti nel profilo dell'organizzatore*/
+.progressi_biglietti{
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.2rem;
+  background: conic-gradient(
+    var(--colore) var(--percentuale),
+    #a6aaac 0 /*dal punto successivo in poi*/
+  );
+}
+
+/*manifesto*/
+.manifesto{
+  max-height: 50vh; 
+  width: auto;
+}
+
+/*filtri*/
+.accordion-button {
+    box-shadow: none !important;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #e9ecef;
+}
+
+.accordion_filtri{
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .accordion_filtri {
+    max-width: 50%;
+  }
+}
+
+/*card performance*/
+.performance_card{
+  width: 18rem;
+  overflow: visible
+}
+
+.performance_card img{
+  height: 250px;
+  object-fit: cover;
+  object-position: top;
+}
+
+@media (max-width: 768px) {
+  .performance_card img {
+    height: 180px;
+  }
+}
+
+.anteprima_descrizione{
+  opacity: 0.7;
+}
+
+.ulteriori_info_card{
+  display: inline;
+  font-size: 0.9rem;
+}
+
+/*performance pagina dedicata*/
+
+@media (max-width: 768px) {
+  .performance_img {
+    height: 300px !important;
+  }
+}
+
+.performance_img {
+  height: 500px;
+  object-fit: contain;
+}
+
+.performance_img_singola{
+  max-height: 500px;
+  max-width: 80%;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .performance_img_singola {
+    max-height: 300px;
+  }
+}
+
+.bio_artista img {
+    float: left;
+    width: 30%;
+    max-width: 250px;
+    max-height: 200px;
+    height: auto;
+    width: auto;
+    margin: 0.4rem 1rem 0.2rem 0;
+}
+
+.data_ora_performance{
+  border: 2px solid #da5b26;
+  border-radius: 10px;
+  padding: 7px 10px; 
+  display: inline-block;
+}
+
+.padding_relativo{
+  padding-right: 0.4rem;
+  padding-left: 0.4rem;
+}
+
+/*form performance*/
+.has_foto{
+  max-height: 70px;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+}
+
+/*visualizzazione bozze e perfoamance nel profilo*/
+.scrollspy_bozze{
+    max-height: 50vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.accordion-body_bozze {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.table_scroll{
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@media (min-width: 900px) {
+  .table_scroll {
+    overflow-x: visible;
+  }
+}
+
+.performance_table{
+  min-width: 900px;
+}
+
+.attributi_tabella{
+  background-color: #da5c2667;
+}

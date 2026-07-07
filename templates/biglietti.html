@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block titolo %}Biglietti{% endblock %}
+{% block biglietti_attiva %}active{% endblock %}
+{% block contenuto %}
+
+{% if not p_primo_biglietto %}
+<div class="d-flex justify-content-center mb-3"> 
+    <a class="bottone_rosso" href="{{ url_for('profilo') }}">Il mio biglietto</a>
+</div>
+
+<div class="position_relative">
+    <div class="disabled_overlay"></div>
+{% endif %}
+    <main class="col-12 px-3 mx-auto px-md-0">
+
+        <h1 class="font_oswald_title text-center">Scegli il biglietto da acquistare</h1>
+
+        {% for biglietto in p_biglietti_distinti %}
+        {% set classe_sfondo = 'biglietto_' ~ ((loop.index0 % 3) + 1) ~ '_sfondo' %}
+        <div class="d-flex justify-content-center mt-4"> 
+            <section class="p-4 {{ classe_sfondo }} w-100 biglietti_dimensioni">
+                <h2 class="font_oswald_title text-center">{{ biglietto.nome_visualizzato }}</h2>
+                <h5 class="text-center font_oswald_body">{{ biglietto.descrizione }}</h5>
+                <div class="text-center mt-4">
+                    <a class="bottone_rosso {% if not p_primo_biglietto %}disabled_link{% endif %}"
+                        href="{{ url_for('biglietto', nome=biglietto.nome) }}">Compra ora</a>
+                </div>
+            </section>
+        </div>
+
+        {% endfor %}
+    </main>
+{% if not p_primo_biglietto %}
+</div>
+{% endif %}
+
+{% endblock %}

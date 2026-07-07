@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block titolo %}Profilo{% endblock %}
+{%block profilo_attivo%}active{% endblock %}
+{% block contenuto %}
+<div class="col-12 mx-auto">
+    <div class="px-1 px-md-3">
+        <section>
+            <h2 class="font_oswald_title">Ciao {{ p_utente.nome }} {{ p_utente.cognome }}!</h2>
+
+            {% if p_utente.is_partecipante %}
+
+            {% if p_biglietto %}
+            <p class="font_oswald_body mt-3 paragrafo_grande">Hai acquistato un biglietto 
+                <strong>{{ p_biglietto.nome_visualizzato | lower}}</strong> 
+                valido per <strong>{{ p_biglietto.giorni_validi_str | lower }}</strong>
+            </p>
+            <p class="font_oswald_body paragrafo_medio">Acquisto effettuato il {{ p_acquisto.data_acquisto }} alle {{
+                p_acquisto.ora_acquisto }}
+            </p>
+
+            {% else %}
+
+            <p class="font_oswald_body mt-3 mb-4 paragrafo_grande">Non hai ancora acquistato alcun biglietto</p>
+            <a class="bottone_rosso" href="{{ url_for('biglietti') }}">Compra un biglietto</a>
+            {% endif %}
+
+            {% endif %}
+        </section>
+
+        {% if not p_utente.is_partecipante %}
+        <div class="text-center d-flex flex-column flex-md-row justify-content-center align-items-center mt-4">
+            <a class="bottone_rosso mx-md-2" href="{{ url_for('nuova_performance') }}">Aggiungi una performance</a>
+            <a class="bottone_blu mt-md-0 mt-2 mx-md-2" href="{{ url_for('nuovo_artista') }}">Aggiungi un artista</a>
+        </div>
+
+        <section class="mt-4">
+            <h3 class="font_oswald_title">Numero di presenze:</h3>
+            <p class="text-muted small font_oswald_body mb-2 text-center">Massimo {{ p_max_biglietti }} presenze per giorno</p>
+
+            <div class="row justify-content-evenly align-items-center">
+                {% for statistica in p_statistiche %}
+                <div class="col-12 col-md-auto text-center {% if not loop.first %}mt-4 mt-md-0{% endif %}">
+                    <p class="font_oswald_body fs-5">{{ statistica.nome_giorno }}: {{ statistica.biglietti_venduti }}</p>
+                    {% if p_max_biglietti > 0 %}
+                        {% set percentuale = (statistica.biglietti_venduti / p_max_biglietti * 100) | round(0) %}
+                    {% else %}
+                        {% set percentuale = 0 %}
+                    {% endif %}
+                    {% if percentuale < 33 %} 
+                        {% set colore="#dc3545" %} 
+                    {% elif percentuale < 66 %} 
+                        {% set colore="#ffc107" %} 
+                    {% else %} 
+                        {% set colore="#198754" %} 
+                    {% endif %} 
+                    <div class="d-inline-flex align-items-center justify-content-center progressi_biglietti" style="--percentuale: {{ percentuale }}%; --colore: {{ colore }};">
+                        {{ percentuale }}%
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </section>
+        
+        <section class="mt-4">
+            <h3 class="font_oswald_title">Performance:</h3>
+
+            {% if p_bozze %}
+            <div class="accordion accordion-flush" id="bozze">
+                <div class="accordion-item">
+
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Le tue bozze
+                        </button>
+                    </h2>
+
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#bozze">
+                        <div class="accordion-body accordion-body_bozze">
+                            <div data-bs-spy="scroll" data-bs-smooth-scroll="true" class="scrollspy_bozze" tabindex="0">
+                                <div class="row">
+                                    {% for bozza in p_bozze %}
+                                    <div class="col-10 col-md-5 col-lg-4 mx-auto
+                                        {% if loop.index0 > 0 %} mt-3 mt-md-0 {% endif %}
+                                        {% if loop.index0 > 1 %} mt-md-3 mt-lg-0 {% endif %}
+                                        {% if loop.index0 > 2 %} mt-lg-3 {% endif %}">
+                                        <div class="card performance_card mx-auto">
+
+                                            <img src="{{ url_for('static', filename=bozza.immagine_copertina) }}"
+                                                class="card-img-top" alt="Copertina della bozza di {{ bozza.nome_artista }}">
+
+                                            <div class="card-body">
+                                                <h5 class="font_oswald_title">{{ bozza.nome_artista }}
+                                                    <span class="font_oswald_title ulteriori_info_card">
+                                                        | {{bozza.giorno_inizio}}
+                                                    </span>
+                                                </h5>
+
+                                                <p class="card-text font_oswald_body anteprima_descrizione">
+                                                    {{bozza.descrizione | truncate(40, True,'...') }}
+                                                </p>
+
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <a href="{{ url_for('nuova_performance', id_bozza=bozza.id) }}"
+                                                        class="bottone_blu">Modifica</a>
+                                                    <form method="POST" action="{{ url_for('elimina_bozza', id_bozza=bozza.id) }}">
+                                                        <button type="submit" class="bottone_rosso">Elimina</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endif %}
+
+            {% if p_performance %}
+            <div class="mt-4 table_scroll px-1 px-md-3">
+                <div data-bs-spy="scroll" data-bs-smooth-scroll="true" class="performance_table" tabindex="0">
+                    <div class="row fw-bold py-2 border-bottom attributi_tabella">
+                        <div class="col">Artista</div>
+                        <div class="col">Data inizio</div>
+                        <div class="col">Ora inizio</div>
+                        <div class="col">Data fine</div>
+                        <div class="col">Ora fine</div>
+                        <div class="col">Genere</div>
+                        <div class="col">Palco</div>
+                        <div class="col text-end">Vai alla performance</div>
+                    </div>
+
+                    {% for p in p_performance %}
+                    <div class="row py-1 border-bottom align-items-center">
+                        <div class="col">{{ p.nome_artista }}</div>
+                        <div class="col iniziale_maiuscola">{{ p.giorno_inizio }}</div>
+                        <div class="col">{{ p.ora_inizio }}</div>
+                        <div class="col iniziale_maiuscola">{{ p.giorno_fine }}</div>
+                        <div class="col">{{ p.ora_fine }}</div>
+                        <div class="col">{{ p.nome_genere }}</div>
+                        <div class="col">{{ p.nome_palco }}</div>
+                        <div class="col text-end">
+                            <a href="{{ url_for('performance', id=p.id) }}" class="{% if loop.index0 % 2 == 0 %}bottone_blu{% else %}bottone_rosso{% endif %}">Vai</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+                <p class="font_oswald_body mt-3 paragrafo_grande text-center">Non sono ancora state aggiunte performance</p>
+            {% endif %}
+
+        </section>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

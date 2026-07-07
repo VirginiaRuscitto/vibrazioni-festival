@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titolo %}Nuovo artista{% endblock %}
+{% block contenuto %}
+
+<section class="col-12 col-md-9 col-lg-7 mx-auto px-3 px-md-0">
+    <h2 class="font_oswald_title mb-4 text-center">Nuovo artista</h2>
+
+    <form action="{{ url_for('nuovo_artista') }}" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Inserire il nome</label>
+            <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="foto_profilo" class="form-label">Inserire una foto (facoltativa)</label>
+            <input type="file" class="form-control" id="foto_profilo" name="foto_profilo" accept="image/*">
+        </div>
+
+        <div class="mb-3">
+            <label for="biografia" class="form-label">Inserire una breve biografia (facoltativa, minimo 20 caratteri)</label>
+            <textarea class="form-control" id="biografia" name="biografia" rows="4"
+                placeholder="Scrivi qualcosa sull'artista" minlength="20"></textarea>
+        </div>
+
+        <input type="hidden" name="next" value="{{ request.referrer }}">
+        
+        <div class="text-center d-flex flex-column flex-md-row justify-content-center align-items-center mt-5">
+            <a class="bottone_blu order-2 order-md-1 mt-3 mt-md-0 mx-md-2" href="{{ url_for('profilo') }}">Torna al profilo</a>
+            <button type="submit" class="bottone_rosso order-1 order-md-2 mx-md-2">Aggiungi l'artista</button>
+        </div>
+    </form>
+
+</section>
+
+{% endblock %}

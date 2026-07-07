@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block titolo %}Nuova performance{% endblock %}
+{% block contenuto %}
+
+<section class="col-12 col-md-9 col-lg-7 mx-auto px-3 px-md-0">
+    <h2 class="font_oswald_title mb-4 text-center">Nuova performance</h2>
+
+    <form action="{{ url_for('nuova_performance') }}" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="id_artista" class="form-label">Selezionare l'artista</label>
+            <select class="form-select" id="id_artista" name="id_artista" required>
+                <option value="" disabled {% if not p_bozza %}selected{% endif %}>Selezionare l'artista</option>
+                {% for artista in p_artisti %}
+                <option value="{{ artista.id }}" {% if p_bozza and p_bozza.id_artista==artista.id %}selected{% endif %}>
+                    {{ artista.nome }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <div class="form-text text-md-center">L'artista che si deve esibire non è presente nell'elenco e non è già impegnato in un'altra performance?</div>
+            <div class="form-text text-md-center small"></div>
+            <div class="text-center mt-3">
+                <a class="bottone_blu" href="{{ url_for('nuovo_artista') }}">Aggiungi un artista</a>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Seleziona giorno e orario di inizio</label>
+            <div class="d-flex flex-column flex-md-row gap-3">
+                <select class="form-select" id="giorno_inizio" aria-label="Seleziona il giorno di inizio"
+                    name="giorno_inizio" required>
+                    <option value="" disabled {% if not p_bozza %}selected{% endif %}>Giorno di inizio</option>
+                    {% for chiave, nome in p_giorni_festival.items() %}
+                    <option value="{{ chiave }}" {% if p_bozza and p_bozza.giorno_inizio==chiave %}selected{% endif %}>
+                        {{ nome }}</option>
+                    {% endfor %}
+                </select>
+                <input type="time" class="form-control" id="ora_inizio" name="ora_inizio" required
+                    value="{{ p_bozza.ora_inizio if p_bozza else '' }}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Seleziona giorno e orario di fine</label>
+            <div class="d-flex flex-column flex-md-row gap-3">
+                <select class="form-select" id="giorno_fine" aria-label="Seleziona il giorno di fine" name="giorno_fine"
+                    required>
+                    <option value="" disabled {% if not p_bozza %}selected{% endif %}>Giorno di fine</option>
+                    {% for chiave, nome in p_giorni_festival.items() %}
+                    <option value="{{ chiave }}" {% if p_bozza and p_bozza.giorno_fine==chiave %}selected{% endif %}>
+                        {{ nome }}</option>
+                    {% endfor %}
+                </select>
+                <input type="time" class="form-control" id="ora_fine" name="ora_fine" required
+                    value="{{ p_bozza.ora_fine if p_bozza else '' }}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_palco" class="form-label">Seleziona il palco</label>
+            <select class="form-select" id="id_palco" aria-label="Seleziona il palco" name="id_palco" required>
+                <option value="" disabled {% if not p_bozza %}selected{% endif %}>Seleziona il palco</option>
+                {% for palco in p_palchi %}
+                <option value="{{ palco.id }}" {% if p_bozza and p_bozza.id_palco==palco.id %}selected{% endif %}>
+                    {{ palco.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_genere" class="form-label">Seleziona il genere</label>
+            <select class="form-select" id="id_genere" aria-label="Seleziona il genere" name="id_genere" required>
+                <option value="" disabled {% if not p_bozza %}selected{% endif %}>Seleziona il genere</option>
+                {% for genere in p_generi %}
+                <option value="{{ genere.id }}" {% if p_bozza and p_bozza.id_genere==genere.id %}selected{% endif %}>
+                    {{ genere.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="descrizione" class="form-label">Descrizione (minimo 50 caratteri)</label>
+            <textarea class="form-control" id="descrizione" name="descrizione" rows="5"
+                minlength="50" placeholder="Descrivi la performance">{{ p_bozza.descrizione if p_bozza else '' }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="immagine_copertina" class="form-label">Immagine di copertina</label>
+            <input class="form-control" type="file" id="immagine_copertina" name="immagine_copertina" accept="image/*"
+                {% if not p_bozza or (p_bozza and not p_bozza.immagine_copertina) %}required{% endif %}>
+        </div>
+
+        {% if p_bozza %}
+        <div class="mb-4 px-2">
+            <label class="form-label text-muted">Immagine di copertina già inserita
+                <small class="form-text text-muted"> (per cambiarla caricare una nuova copertina)</small>
+            </label>
+            <div>
+                <img src="{{ url_for('static', filename=p_bozza.immagine_copertina) }}" alt="Immagine copertina scelta"
+                    class="has_foto">
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label for="immagini_extra" class="form-label">Foto aggiuntive (facoltative)</label>
+            <input class="form-control" type="file" id="immagini_extra" name="immagini_extra" accept="image/*" multiple>
+        </div>
+
+        {% if p_bozza and p_foto %}
+        <div class="mb-4 px-2">
+            <label class="form-label text-muted">Foto aggiuntive già inserite
+                <small class="form-text text-muted"> (ogni foto può essere eliminata cliccando su 'elimina')</small>
+            </label>
+            <div class="d-flex flex-wrap gap-3">
+                {% for foto in p_foto %}
+                <div class="text-center">
+                    <img src="{{ url_for('static', filename=foto.foto) }}" alt="Foto aggiuntiva" class="has_foto">
+                    <div class="form-check mt-1">
+                        <input class="form-check-input" type="checkbox" name="elimina_{{ loop.index }}"
+                            value="{{ foto.id }}" id="elimina_{{ loop.index }}">
+                        <label class="form-check-label" for="elimina_{{ loop.index }}">Elimina</label>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <label class="mb-2 text-md-center d-block">Vuoi pubblicare la performance o tenerla come bozza?</label>
+            <div class="d-flex justify-content-center gap-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo_performance" id="pubblica" value="1" {% if
+                        not p_bozza %}checked{% endif %}>
+                    <label class="form-check-label" for="pubblica">Pubblica</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo_performance" id="bozza" value="0" {% if
+                        p_bozza %}checked{% endif %}>
+                    <label class="form-check-label" for="bozza">Bozza</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center d-flex flex-column flex-md-row justify-content-center align-items-center mt-5">
+            <a class="bottone_blu order-2 order-md-1 mt-3 mt-md-0 mx-md-2" href="{{ url_for('profilo') }}">Torna al profilo</a>
+            <button type="submit" class="bottone_rosso order-1 order-md-2 mx-md-2">Salva performance</button>
+        </div>
+
+        {% if p_bozza %}
+        <input type="hidden" name="is_bozza" value="{{ p_bozza.id }}">
+        {% endif %}
+
+    </form>
+
+</section>
+{% endblock %}
