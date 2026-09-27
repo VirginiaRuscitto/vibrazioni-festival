@@ -1,31 +1,33 @@
 # Vibrazioni Festival
 
-Applicazione web full-stack dedicata alla gestione di un festival musicale di 3 giorni (venerdì-sabato-domenica) su 3 palchi paralleli. Il sistema gestisce due tipi di utenti con permessi ed esperienze diverse. I partecipanti possono consultare il programma delle esibizioni, filtrarlo per giorno/genere/palco e acquistare un biglietto, mentre gli organizzatori possono aggiungere artisti, creare e pubblicare performance, salvarle come bozza, modificarle o eliminarle.
+Applicazione web full-stack dedicata alla gestione di un festival musicale di 3 giorni (venerdì, sabato e domenica) su 3 palchi paralleli e due tipologie di utenti: partecipanti e organizzatori. I partecipanti possono consultare il programma delle esibizioni, filtrarlo per giorno, genere e palco e acquistare un biglietto, mentre gli organizzatori possono aggiungere artisti, creare e pubblicare performance, salvarle come bozze, modificarle o eliminarle.
 
 ---
 
 ## Funzionalità principali
 
-- Autenticazione e gestione sessioni con Flask-Login, password hashate con Werkzeug
-- Homepage con filtri combinabili per giorno, genere e palco
-- Sistema di acquisto biglietti con controllo del tetto massimo di presenze per giornata
-- Creazione performance con:
-  - validazione dei campi e della durata (calcolo automatico in minuti)
-  - controllo automatico di sovrapposizione oraria sullo stesso palco (con fallback a bozza se il conflitto viene rilevato)
-  - salvataggio come bozza o pubblicazione definitiva
-  - upload e resize automatico delle immagini (copertina + foto multiple) con Pillow
-  - gestione ed eliminazione delle foto extra già caricate
-- Gestione anagrafica artisti (con controllo duplicati e biografia opzionale)
-- Pagina profilo dinamica in base al ruolo (statistiche di vendita per l'organizzatore, biglietto acquistato per il partecipante)
+- Autenticazione e gestione sessioni con `Flask-Login`
+- Gestione di due ruoli utente: partecipante e organizzatore
+- Consultazione e filtraggio del programma per giorno, genere e palco
+- Acquisto dei biglietti con controllo del numero massimo di presenze giornaliere
+- Gestione delle performance:
+  - creazione e modifica
+  - salvataggio come bozza o pubblicazione
+  - validazione dei dati e della durata
+  - controllo delle sovrapposizioni sullo stesso palco
+  - upload di una copertina e di foto aggiuntive
+- Gestione anagrafica artisti con controllo dei duplicati e biografia opzionale
+- Pagina del profilo dinamica in base al ruolo, con statistiche di vendita per gli organizzatori e riepilogo del biglietto per i partecipanti
+- Ridimensionamento automatico delle immagini tramite `Pillow`
 
 ## Stack tecnico
 
 | Livello | Tecnologie |
 |---|---|
-| Backend | Python, Flask, Flask-Login |
-| Database | SQLite |
-| Frontend | HTML5, Jinja2, CSS3, Bootstrap 5 |
-| Altro | Pillow (elaborazione immagini) |
+| Backend | `Python`, `Flask`, `Flask-Login` |
+| Database | `SQLite` |
+| Frontend | `HTML5`, `Jinja2`, `CSS3`, `Bootstrap 5` |
+| Elaborazione immagini | `Pillow` |
 
 ## Database
 
@@ -62,6 +64,8 @@ Applicazione web full-stack dedicata alla gestione di un festival musicale di 3 
 
 ## Credenziali di test
 
+Sono disponibili alcuni account preconfigurati per provare le funzionalità dei due ruoli.
+
 | Email | Password | Ruolo |
 |---|---|---|
 | matteo.rossi@example.com | matteo01 | Organizzatore |
@@ -71,8 +75,15 @@ Applicazione web full-stack dedicata alla gestione di un festival musicale di 3 
 | lorenzo.ferrari@example.com | lorenzo01 | Partecipante |
 
 ## Avvio in locale
-
+Installare le dipendenze con:
+```bash
+pip install -r requirements.txt
+```
+Avviare l'applicazione con:
 ```bash
 flask run
 ```
-L'app sarà disponibile su `http://127.0.0.1:5000`
+L'app sarà disponibile su `http://127.0.0.1:5000`.
+
+## Configurazione
+La versione del progetto presente in questa repository corrisponde alla versione consegnata per l'esame. La `SECRET_KEY` viene definita direttamente nel codice a scopi didattici e in un'applicazione reale dovrebbe essere mantenuta separata dal codice sorgente, ad esempio tramite variabili d'ambiente.
